@@ -1,0 +1,14 @@
+services:
+  open-webui:
+    image: ${image_tag}
+    container_name: open-webui
+    volumes:
+      - open-webui:/app/backend/data
+    ports:
+      - 3005:8080
+    env_file:
+      - .env
+    restart: unless-stopped
+
+volumes:
+  open-webui: {}

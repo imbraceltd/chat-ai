@@ -1,0 +1,28 @@
+services:
+  open-webui:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      args:
+        USE_CUDA: 'false'
+        USE_OLLAMA: 'false' # Don't install Ollama in the container
+        USE_EMBEDDING_MODEL: 'sentence-transformers/all-MiniLM-L6-v2'
+        USE_RERANKING_MODEL: ''
+        BUILD_HASH: 'local-build'
+        NODE_MEMORY: ${NODE_MEMORY:-4096}
+    container_name: open-webui
+    volumes:
+      - open-webui:/app/backend/data
+    ports:
+      - ${OPEN_WEBUI_PORT-3000}:8080
+    env_file:
+      - .env
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: chat-ai-network
+
+volumes:
+  open-webui: {}
